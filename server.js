@@ -36,7 +36,7 @@ var todoNextId = 1;
 app.post('/todos', function(req, res) {
   var body = req.body;
   //check for only two data fields provided
-  var filteredObj = _.pick(body,"description","completed");
+  var filteredObj = _.pick(body, "description", "completed");
   // check for validations for todoNextId
   if (!filteredObj || body.description.trim().length === 0 || !_.isBoolean(body.completed) || !_.isString(body.description)) {
     return res.status(400).send("Invalid data submitted");
@@ -57,7 +57,20 @@ app.post('/todos', function(req, res) {
 app.get('/todos', function(req, res) {
   // return json data to request
   res.json(todos);
-})
+});
+
+// below method is for deleting any record
+app.delete("/todos/:id", function(req, res) {
+  var todoId = parseInt(req.params.id,10);
+  var matchedTodo = _.findWhere(todos,{id:todoId});
+  if (matchedTodo) {
+    //delete record from array
+    todos = _.without(todos,matchedTodo);
+    res.send("Task deleted for ID :" + todoId);
+  } else {
+    res.status(404).send("This record does not exits");
+  }
+});
 
 // GET todos/:id
 app.get("/todos/:id", function(req, res) {
