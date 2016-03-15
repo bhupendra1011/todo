@@ -75,16 +75,21 @@ var filteredtodos = todos;
 if (queryParams.hasOwnProperty("completed") && queryParams.completed === "true")
 {
   filteredtodos = _.where(todos,{completed:true});
-
 }
 else if ( queryParams.hasOwnProperty("completed") && queryParams.completed === "false" )
 {
   filteredtodos = _.where(todos,{completed:false});
 
 }
-/* {
-  return res.staus(400).send("wrong params to be updated");
-}*/
+else if (queryParams.hasOwnProperty("completed")) {
+  return res.status(400).send("wrong params to be updated");
+}
+if ( queryParams.hasOwnProperty("q") && queryParams.q.trim().length > 0)
+{
+  filteredtodos = _.filter(filteredtodos, function(todo){
+    return todo.description.toLowerCase().indexOf(queryParams.q.toLowerCase()) > -1 ;
+  });
+}
 
   res.json(filteredtodos);
 });
