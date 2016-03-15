@@ -72,6 +72,8 @@ app.delete("/todos/:id", function(req, res) {
   }
 });
 
+// to update resouce PUT method
+
 // GET todos/:id
 app.get("/todos/:id", function(req, res) {
   var todoId = parseInt(req.params.id, 10);
