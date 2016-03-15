@@ -56,7 +56,25 @@ app.post('/todos', function(req, res) {
 // GET todos/
 app.get('/todos', function(req, res) {
   // return json data to request
-  res.json(todos);
+// filter the request bsaed upon query params
+var queryParams = req.query;
+var filteredtodos = todos;
+
+if (queryParams.hasOwnProperty("completed") && queryParams.completed === "true")
+{
+  filteredtodos = _.where(todos,{completed:true});
+
+}
+else if ( queryParams.hasOwnProperty("completed") && queryParams.completed === "false" )
+{
+  filteredtodos = _.where(todos,{completed:false});
+
+}
+/* {
+  return res.staus(400).send("wrong params to be updated");
+}*/
+
+  res.json(filteredtodos);
 })
 
 // delete request
